@@ -15,13 +15,16 @@ app = FastAPI(
 origins = [
     "http://localhost",
     "http://localhost:5173",
+    "http://localhost:3000",
+    "https://*.onrender.com",
+    "https://diabete-site.onrender.com",  # Remplacez par l'URL exacte de votre frontend
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Temporairement permissif pour tester
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
