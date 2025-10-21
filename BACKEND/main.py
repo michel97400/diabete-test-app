@@ -1,5 +1,5 @@
 from typing import Union, Dict, Any
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
 from model import ModelDiabetes
 import os
@@ -27,6 +27,15 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# Middleware pour déboguer les requêtes
+@app.middleware("http")
+async def debug_requests(request: Request, call_next):
+    print(f"🔍 Method: {request.method}, URL: {request.url}")
+    print(f"🔍 Headers: {dict(request.headers)}")
+    response = await call_next(request)
+    print(f"🔍 Response status: {response.status_code}")
+    return response
 
 # Initialisation du modèle (global pour éviter de recharger à chaque requête)
 model = None
@@ -128,6 +137,11 @@ def status_check():
     """Endpoint de statut alternatif"""
     return health_check()
 
+
+@app.options("/predict")
+def predict_options():
+    """Gestion explicite des requêtes OPTIONS pour /predict"""
+    return {"message": "OPTIONS OK"}
 
 @app.post("/predict")
 def predict_diabetes(patient_data: PatientData):
