@@ -1,12 +1,23 @@
-# Bureau/docker-compose.yml
-version: '3.8'
+# Docker Compose pour le projet Diabète Test
+
 services:
   frontend:
-    build: ./Site_diabete
+    build:
+      context: ./FRONTEND
+      dockerfile: Dockerfile.dev
     ports:
-      - "5173:5173"
+      - "${FRONT_END_PORT}:5173"
+    environment:
+      - VITE_API_URL=http://localhost:${BACKEND_PORT:-8000}
+      - VITE_PREDICT_ENDPOINT=/predict
+    env_file:
+      - .env
+    depends_on:
+      - backend
     
   backend:
-    build: ./Fast-api
+    build: ./BACKEND
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT}:8000"
+    env_file:
+      - .env

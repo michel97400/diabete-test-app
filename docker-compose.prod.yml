@@ -1,0 +1,18 @@
+# Docker Compose pour la production
+services:
+  frontend:
+    build: ./FRONTEND
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=https://votre-backend-url.onrender.com
+      - VITE_PREDICT_ENDPOINT=/predict
+    depends_on:
+      - backend
+    
+  backend:
+    build: ./BACKEND
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
