@@ -5,7 +5,7 @@ services:
     ports:
       - "80:80"
     environment:
-      - VITE_API_URL=https://votre-backend-url.onrender.com
+      - VITE_API_URL=https://diabete-api.onrender.com
       - VITE_PREDICT_ENDPOINT=/predict
     depends_on:
       - backend
