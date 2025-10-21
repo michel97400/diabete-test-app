@@ -93,7 +93,9 @@ def read_root():
         "status": "Modèle chargé" if model and model.is_loaded else "Modèle non disponible",
         "endpoints": {
             "prediction": "/predict",
-            "health": "/health"
+            "health": "/health",
+            "santé": "/santé",
+            "status": "/status"
         }
     }
 
@@ -112,6 +114,16 @@ def health_check():
         "model_info": model_info,
         "message": "API et modèle opérationnels"
     }
+
+@app.get("/santé")
+def sante_check():
+    """Endpoint de santé avec accent (pour les bots)"""
+    return health_check()
+
+@app.get("/status")
+def status_check():
+    """Endpoint de statut alternatif"""
+    return health_check()
 
 
 @app.post("/predict")
