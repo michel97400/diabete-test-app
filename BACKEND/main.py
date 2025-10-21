@@ -12,20 +12,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
-origins = [
-    "http://localhost",
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "https://*.onrender.com",
-    "https://diabete-site.onrender.com",  # Remplacez par l'URL exacte de votre frontend
-]
-
+# Configuration CORS très permissive pour debugging
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Temporairement permissif pour tester
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_origins=["*"],
+    allow_credentials=False,  # Changé à False pour simplifier
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 # Middleware pour déboguer les requêtes
@@ -36,6 +30,12 @@ async def debug_requests(request: Request, call_next):
     response = await call_next(request)
     print(f"🔍 Response status: {response.status_code}")
     return response
+
+# Handler global pour toutes les requêtes OPTIONS
+@app.options("/{path:path}")
+def handle_options(path: str):
+    """Handler global pour toutes les requêtes OPTIONS"""
+    return {"message": f"OPTIONS OK for {path}"}
 
 # Initialisation du modèle (global pour éviter de recharger à chaque requête)
 model = None
@@ -137,6 +137,16 @@ def status_check():
     """Endpoint de statut alternatif"""
     return health_check()
 
+
+@app.get("/test")
+def test_endpoint():
+    """Endpoint de test simple"""
+    return {"message": "Test OK", "status": "working"}
+
+@app.options("/test")
+def test_options():
+    """Test OPTIONS pour vérifier CORS"""
+    return {"message": "Test OPTIONS OK"}
 
 @app.options("/predict")
 def predict_options():
