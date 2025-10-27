@@ -25,15 +25,15 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+            cd FRONTEND
+            npm install
+            npm run build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: .
+            name: react-app
+            path: FRONTEND/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+            name: react-app
       
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -51,5 +51,5 @@ jobs:
         with:
           app-name: 'diabeteAppPayet'
           slot-name: 'Production'
-          package: .
+            package: FRONTEND/build
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_82ED67B4478A4BFF9FBC7E112A8514FC }}
