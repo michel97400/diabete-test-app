@@ -49,7 +49,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'diabeteAppPayet'
-          slot-name: 'Production'
+            app-name: 'diabeteAppPayet'
+            slot-name: 'Production'
             package: FRONTEND/build
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_82ED67B4478A4BFF9FBC7E112A8514FC }}
+            publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_82ED67B4478A4BFF9FBC7E112A8514FC }}
