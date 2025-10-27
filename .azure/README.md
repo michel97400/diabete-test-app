@@ -154,7 +154,7 @@ az containerapp logs show \
 
 ### Static Web App logs
 Consultez le portail Azure > Static Web Apps > votre app > Functions
-
+Y.061199184808ol
 ## Coûts estimés
 
 - **Container App** : ~10-30€/mois (selon l'usage)
