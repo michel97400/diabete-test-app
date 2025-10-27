@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'diabete-app'
           slot-name: 'Production'
-          package: .
+          package: FRONTEND/dist
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7AA57B314A904DCFB4629CF77856795E }}
